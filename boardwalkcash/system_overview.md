@@ -31,7 +31,7 @@ This document provides a categorized overview of the systems and components in t
 ### 1.3 Custom Hooks
 - useCashu: Manages Cashu mint interactions and proof storage
 - useNwc: Handles Nostr Wallet Connect (NWC) requests and Prism payments
-- useCashuContext and useProofStorage: Provide context for Cashu operations
+- useCashuContext and useProofStorage: Provide context for Cashu operations (proposed refactoring in Issue #67)
 - useProofManager: Manages proof validation and balance updates
 
 ### 1.4 Routing and Navigation
@@ -78,6 +78,7 @@ This document provides a categorized overview of the systems and components in t
 
 ### 4.2 Progressive Web App (PWA)
 - PWA capabilities for improved mobile experience
+- Proposed addition of a Refresh button for better mobile and PWA experience (Issue #78)
 
 ## 5. Key Challenges and Improvement Areas
 
@@ -88,7 +89,7 @@ This document provides a categorized overview of the systems and components in t
 
 ### 5.2 State Management and Data Persistence
 - Issue #53: Browser refresh causing token unavailability
-- Issue #67: Proposed refactoring to use context for improved state management
+- Issue #67: Proposed refactoring to use context (useCashuContext and useProofStorage) for improved state management
 - Heavy reliance on localStorage for key application data (e.g., keysets, proofs)
 - Periodic proof validation and balance updates
 
