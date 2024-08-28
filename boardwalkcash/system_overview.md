@@ -27,6 +27,12 @@ This document provides a categorized overview of the systems and components in t
 - useNwc: Handles Nostr Wallet Connect (NWC) requests and Prism payments
 - useCashuContext and useProofStorage (proposed in Issue #67)
 
+### 1.4 Routing and Navigation
+- Uses Next.js routing
+- Main page (index.tsx) checks for existing keysets in localStorage:
+  - If keysets exist, redirects to '/wallet'
+  - If no keysets, redirects to '/setup'
+
 ## 2. Backend Systems
 
 ### 2.1 API Endpoints
@@ -72,6 +78,7 @@ This document provides a categorized overview of the systems and components in t
 ### 5.2 State Management and Data Persistence
 - Issue #53: Browser refresh causing token unavailability
 - Issue #67: Proposed refactoring to use context for improved state management
+- Heavy reliance on localStorage for key application data (e.g., keysets)
 
 ### 5.3 Transaction Handling
 - Issue #29: Error in minting tokens exceeding mint reserves
@@ -83,7 +90,7 @@ This document provides a categorized overview of the systems and components in t
 ## 6. Security Considerations
 
 ### 6.1 Local Storage
-- Current use of localStorage for storing user proofs
+- Current use of localStorage for storing user proofs and keysets
 - Potential need for a more secure and centralized storage solution
 
 ### 6.2 Key Management
