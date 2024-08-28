@@ -23,15 +23,15 @@ This document provides a categorized overview of the systems and components in t
 ### 1.2 State Management
 - Primary Tool: Redux Toolkit
 - Key Slices:
-  - ActivitySlice
-  - CashuSlice
-  - UserSlice
-  - WalletSlice
+  - UserSlice: Manages user data, initialization, and actions
+  - WalletSlice: Handles wallet state, keysets, and balance management
+  - ActivitySlice: Manages activity state and notifications
+  - CashuSlice: Handles Cashu-specific state and operations
 
 ### 1.3 Custom Hooks
 - useCashu: Manages Cashu mint interactions and proof storage
 - useNwc: Handles Nostr Wallet Connect (NWC) requests and Prism payments
-- useCashuContext and useProofStorage
+- useCashuContext and useProofStorage: Provide context for Cashu operations
 - useProofManager: Manages proof validation and balance updates
 
 ### 1.4 Routing and Navigation
@@ -64,6 +64,7 @@ This document provides a categorized overview of the systems and components in t
 - Local storage of balance as e-cash
 - Integration with Cashu mint and cashu-ts library
 - Proof management and validation
+- Support for multiple keysets (mints)
 
 ### 3.3 Nostr Integration
 - Nostr Wallet Connect (NWC) for initiating payments from apps
@@ -83,26 +84,33 @@ This document provides a categorized overview of the systems and components in t
 ### 5.1 User Management
 - Issue #79: Need for app-level user initialization
 - Improved error handling for user not found scenarios
+- More secure storage of user keys and sensitive information
 
 ### 5.2 State Management and Data Persistence
 - Issue #53: Browser refresh causing token unavailability
 - Issue #67: Proposed refactoring to use context for improved state management
-- Heavy reliance on localStorage for key application data (e.g., keysets)
+- Heavy reliance on localStorage for key application data (e.g., keysets, proofs)
 - Periodic proof validation and balance updates
 
-### 5.3 Transaction Handling
+### 5.3 Wallet Management
+- Handling of multiple keysets and mints
+- Balance locking mechanism for preventing unintended updates
+- Synchronization between local state and server state
+
+### 5.4 Transaction Handling
 - Issue #29: Error in minting tokens exceeding mint reserves
 - Issue #43: Decimal place restriction on amount inputs
 - Handling of locked proofs and trusted mints
 
-### 5.4 User Experience
+### 5.5 User Experience
 - Issue #78: Addition of refresh button for improved mobile and PWA experience
 - Handling of multiple tabs to prevent concurrent usage
+- Improved error messaging and user feedback
 
 ## 6. Security Considerations
 
 ### 6.1 Local Storage
-- Current use of localStorage for storing user proofs and keysets
+- Current use of localStorage for storing user proofs, keysets, and keys
 - Use of sessionStorage for tab management
 - Potential need for a more secure and centralized storage solution
 
@@ -113,5 +121,9 @@ This document provides a categorized overview of the systems and components in t
 ### 6.3 Token Handling
 - Decoding and validation of received tokens
 - Handling of locked proofs and trusted mints
+
+### 6.4 Multi-mint Support
+- Security implications of supporting multiple mints
+- Proper isolation and management of keys and proofs from different mints
 
 This overview provides a holistic view of the Boardwalk Cash application, highlighting its main systems, current challenges, and areas for improvement. It serves as a foundation for addressing open issues and making informed decisions about the application's architecture and feature development.
