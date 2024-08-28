@@ -1,41 +1,92 @@
 # User Management in Boardwalk Cash
 
-Based on the analysis of the UserSlice.ts file, here's what we know about user management in Boardwalk Cash:
-
 ## User State
 
-The user state includes:
+The user state in Boardwalk Cash includes:
 - Public key (pubkey)
 - Private key (privkey)
 - Username
-- Contacts
+- Contacts (array of PublicContact)
 - Status ('idle' | 'loading' | 'succeeded' | 'failed')
 - Error information
 
 ## User Initialization
 
-1. The `initializeUser` function is implemented as a Redux Toolkit async thunk.
-2. It checks localStorage for existing user keys (public and private).
-3. If keys don't exist:
-   - New keys are generated
-   - A new user is created with a placeholder username
-   - User data is stored in localStorage
-4. If keys exist:
-   - User data is fetched from the server
-   - If no username is found, a placeholder is created and updated on the server
+The `initializeUser` function is implemented as a Redux Toolkit async thunk. Here's how it works:
 
-## Known Issues
+1. Check localStorage for existing user keys (public and private).
+2. If keys don't exist:
+   - Generate new keys using Nostr tools
+   - Store the new keys in localStorage
+   - Check for existing keysets in localStorage
+   - Create a new user with a placeholder username
+   - Store user data in localStorage
+3. If keys exist:
+   - Fetch user data from the server
+   - If no username is found, create a placeholder and update on the server
 
-1. User initialization is likely called at the page level, which may lead to inconsistent user states across different pages.
-2. Error handling for user not found or initialization failure could be improved.
-3. The implementation mixes concerns by handling both local storage and API calls within the same function.
+## Key Components
+
+1. **UserSlice**: Redux slice for managing user state
+   - Handles user initialization, adding contacts, and updating username
+   - Manages loading states and error handling
+
+2. **LocalStorage**: Used for storing:
+   - Private key
+   - Public key
+   - Keysets (mint information)
+
+3. **API Interactions**:
+   - `createUser`: Creates a new user on the server
+   - `fetchUser`: Retrieves user data from the server
+   - `updateUser`: Updates user information on the server
+
+## User Actions
+
+1. **Add Contact**: `addContactAction`
+   - Adds a new contact to the user's contact list
+
+2. **Update Username**: `updateUsernameAction`
+   - Updates the user's username
+
+## Known Issues and Improvement Areas
+
+1. **App-level Initialization**: 
+   - Current implementation initializes user at the page level
+   - Need to move initialization to the app level for consistency (Issue #79)
+
+2. **Error Handling**:
+   - Current error handling is basic, returning a generic error message
+   - Opportunity to implement more detailed error handling and user feedback
+
+3. **Security Considerations**:
+   - Private keys are stored in localStorage, which may pose security risks
+   - Consider implementing more secure key storage methods
+
+4. **Username Generation**:
+   - Currently uses a simple placeholder username based on public key
+   - Could be improved with a more user-friendly username generation or prompt for user input
+
+5. **Multiple Keysets**:
+   - Current implementation throws an error if multiple keysets are found
+   - Could be improved to handle multiple keysets more gracefully
+
+6. **State Persistence**:
+   - Heavy reliance on localStorage for key application data
+   - Consider implementing more robust state persistence mechanisms
+
+7. **Asynchronous Operations**:
+   - User initialization involves multiple asynchronous operations
+   - Ensure proper error handling and state management for all async operations
 
 ## Suggested Improvements
 
-1. Move user initialization to the app level for consistency across all pages.
-2. Implement a more robust error handling mechanism.
-3. Create a custom hook (e.g., `useUser`) for simplified access to user data across components.
-4. Separate concerns by moving localStorage operations and API calls to separate utility functions.
-5. Enhance error handling with more specific error types and messages.
+1. Implement a custom hook (e.g., `useUser`) for easier access to user data and actions across components.
+2. Move user initialization to the app level for consistent user state across pages.
+3. Enhance error handling with more specific error types and helpful error messages.
+4. Implement a more secure method for storing sensitive information like private keys.
+5. Develop a more robust username generation system or implement a user onboarding flow for username selection.
+6. Refactor to handle multiple keysets if that's a desired feature.
+7. Consider using a more secure and centralized storage solution for user data and proofs.
 
-Note: These observations and suggestions are based on the available information and may not reflect the current state of the project. Always refer to the official repository for the most up-to-date implementation details.
+Remember to always refer to the official repository and documentation for the most up-to-date information on user management in Boardwalk Cash.
